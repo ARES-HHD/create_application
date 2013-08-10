@@ -1,0 +1,50 @@
+{% load console_tags %}
+
+<tr id="{{model}}data_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+    class="{% ifequal one_model_data.admin_new_inline_status 'mark-delete' %}
+           error
+           {% endifequal %}" >
+
+      <!-- 显示编辑Form -->
+      {% with temp_template="console/"|add:admin_tmpl_path|add:"/edit_inline_templ/"|add:model|add:"_edit_inline_show_one_data.html" %}
+      {% with temp_widgets="console/"|add:admin_tmpl_path|add:"/model_inline_tmpl_widgets.html" %}
+        {% include temp_template %}
+      {% endwith %}
+      {% endwith %}
+
+  <!-- <td class=""> -->
+    <span class="btn-group span1" style="float: right">
+      <a class="btn-link"
+
+         onclick="load_{{model}}_show({{one_model_data.id}}, '{{one_model_data.admin_new_fakeid}}')"
+         {% ifequal one_model_data.admin_new_inline_status "to-add" %}
+         title="取消添加"
+         {% endifequal %}
+
+         {% ifequal one_model_data.admin_new_inline_status "mark-delete" %}
+         title="取消删除"
+         {% endifequal %}
+
+         {% ifequal one_model_data.admin_new_inline_status "to-modify" %}
+         title="取消修改"
+         {% endifequal %}
+         ><i class="icon-share-alt"></i>
+      </a>
+
+      {% ifequal one_model_data.admin_new_inline_status "to-add" %}
+      {% else %}
+      <a class="btn-link" title="标记删除"
+         onclick="toggle_delete('{{model}}data_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}', 'admin_new_inline_status_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}', '{{one_model_data.id}}');">
+        <i class="icon-remove"></i>
+      </a>
+      {% endifequal %}
+
+    </span>
+</span>
+
+<input type="hidden"
+       id="admin_new_inline_status_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+       name="admin_new_inline_status_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+       value="{{one_model_data.admin_new_inline_status}}">
+  </td>
+</tr>

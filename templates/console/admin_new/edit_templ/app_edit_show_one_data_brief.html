@@ -1,0 +1,52 @@
+<ul id="tab" class="nav nav-tabs">
+  <li class="active"><a href="#base_{{one_model_data.id}}" data-toggle="tab"> <strong> 基本配置 </strong> </a></li>
+</ul>
+<div id="myTabContent1" class="tab-content">
+  <div class="tab-pane fade in active" id="base_{{one_model_data.id}}">
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="jira_url" mtype="input" mtclass="span2" mdclass="span10"%}
+    </div>
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="name" mtype="input" mtclass="span2" mdclass="span5"%}
+      <div class="control-group span2" style="text-align:right">
+          User:</div>
+      <div class="control-group span2">
+          <input class="span8" type="text" name="user" value={{current_user}} readonly="readonly">
+      </div>
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="channels" mtype="textarea" mtclass="span2" mdclass="span10"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="origins" mtype="textarea" mtclass="span2" mdclass="span10"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="check_url" mtype="input" mtclass="span2" mdclass="span10"%}
+    </div>
+
+    <div style="display:none">
+      {% include temp_widgets with  mname="status" mtype="checkbox" mtclass="span2" mdclass="span4"%}
+    </div>
+    <div style="display:none">
+      {% include temp_widgets with  mname="grid" mtype="multiselect" mtclass="span2" mdclass="span4"%}
+    </div>
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="product" mchoices=products mtype="select" mtclass="span2" mdclass="span4"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="desc" mtype="textarea" mtclass="span2" mdclass="span10"%}
+    </div>
+  </div>
+
+
+  <div class="tab-pane fade" id="dsa_{{one_model_data.id}}">
+    {% include temp_widgets with  mname="cluster" mtype="multiselect" mtclass="span1" mdclass="span5"%}
+  </div>
+
+
+</div>
+
+
+

@@ -1,0 +1,211 @@
+<ul id="tab" class="nav nav-tabs">
+  <li class="active"><a href="#base_{{one_model_data.id}}" data-toggle="tab"> <strong> 基本配置 </strong> </a></li>
+  <li ><a href="#s3_{{one_model_data.id}}" data-toggle="tab"> <strong> 防盗链配置 </strong> </a></li>
+  <li ><a href="#ats_{{one_model_data.id}}" data-toggle="tab"> <strong> ATS配置 </strong> </a></li>
+  <li ><a href="#referer_{{one_model_data.id}}" data-toggle="tab"> <strong> Referer配置 </strong> </a></li>
+  <li ><a href="#limit_{{one_model_data.id}}" data-toggle="tab"> <strong> 限速配置 </strong> </a></li>
+  <li ><a href="#bigfile_{{one_model_data.id}}" data-toggle="tab"> <strong> Bigfile配置 </strong> </a></li>
+  <!-- <li ><a href="#bk_{{one_model_data.id}}" data-toggle="tab"> <strong> BK配置 </strong> </a></li> -->
+  <li ><a href="#dsa_{{one_model_data.id}}" data-toggle="tab"> <strong> DSA配置 </strong> </a></li>
+</ul>
+<div id="myTabContent1" class="tab-content">
+  <div class="tab-pane fade in active" id="base_{{one_model_data.id}}">
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="jira_url" mtype="input" mtclass="span2" mdclass="span10"%}
+    </div>
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="name" mtype="input" mtclass="span2" mdclass="span5"%}
+      {% include temp_widgets with  mname="user" mchoices=usernames mtype="select" mtclass="span2" mdclass="span2"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="channels" mtype="textarea" mtclass="span2" mdclass="span10"%}
+    </div>
+    <!--<div class="row-fluid">-->
+      <!--{% include temp_widgets with  mname="channels_icp" mtype="input" mtclass="span2" mdclass="span8"%}-->
+      <!--<div class="span2 offset1">-->
+        <!--<a class="btn btn-mini" href="http://tool.qycn.com/icp/" target="_blank">检查备案</a>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="origins" mtype="textarea" mtclass="span2" mdclass="span10"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="check_url" mtype="input" mtclass="span2" mdclass="span10"%}
+    </div>
+
+    <!--<div class="row-fluid">-->
+      <!--{% include temp_widgets with  mname="third_cdn_status" mtype="input" mtclass="span2" mdclass="span10"%}-->
+    <!--</div>-->
+
+    <!--<div class="row-fluid">-->
+      <!--{% include temp_widgets with  mname="use_origin_as_interip" mtype="checkbox" mtclass="span2" mdclass="span5"%}-->
+    <!--</div>-->
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="status" mtype="checkbox" mtclass="span2" mdclass="span4"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="grid" mtype="multiselect" mtclass="span2" mdclass="span4"%}
+    </div>
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="product" mchoices=products mtype="select" mtclass="span2" mdclass="span4"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="desc" mtype="textarea" mtclass="span2" mdclass="span10"%}
+    </div>
+  </div>
+
+  <div class="tab-pane fade" id="s3_{{one_model_data.id}}">
+    <h4>SinaEdge防盗链</h4>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="is_sinaedge_anti_stealing_link" mtype="checkbox" mtclass="span2" mdclass="span10" mdattr="onchange='window.block_toggle_show(\"is_sinaedge_anti_stealing_link\")'" %}
+    </div>
+
+    <div id="block_is_sinaedge_anti_stealing_link_{{one_model_data.id}}">
+      <div class="row-fluid">
+        {% include temp_widgets with  mname="sinaedge_kid" mtype="input" mtclass="span2" mdclass="span4"%}
+        {% include temp_widgets with  mname="sinaedge_key" mtype="input" mtclass="span2" mdclass="span4"%}
+      </div>
+    </div>
+
+    <h4>S3防盗链</h4>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="is_s3" mtype="checkbox" mtclass="span2" mdclass="span10" mdclass="span10" mdattr="onchange='window.block_toggle_show(\"is_s3\")'" %}
+    </div>
+    <div class="row-fluid">
+      <div id="block_is_s3_{{one_model_data.id}}">
+        {% include temp_widgets with  mname="s3_kid" mtype="input" mtclass="span2" mdclass="span4"%}
+        {% include temp_widgets with  mname="s3_passwd" mtype="input" mtclass="span2" mdclass="span4"%}
+      </div>
+      <div class="row-fluid">
+        {% include temp_widgets with  mname="escape_filename" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane fade" id="ats_{{one_model_data.id}}">
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="convert_host" mchoices=convert_hostnames mtype="enumerate" mtclass="span2" mdclass="span4"%}
+    </div>
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="is_regex_map" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="cache_ignore_querystring" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="enable_add_header" mtype="checkbox" mtclass="span2" mdclass="span2"%}
+      {% include temp_widgets with  mname="header_to_add" mtype="input" mtclass="span2" mdclass="span3"%}
+      {% include temp_widgets with  mname="remove_duplicate" mtype="checkbox" mtclass="" mdclass="span2"%}
+    </div>
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="enable_combo" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+    </div>
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="enable_gzip" mtype="checkbox" mtclass="span2" mdclass="span3"%}
+      {% include temp_widgets with  mname="gzip_types" mtype="input" mtclass="span1" mdclass="span5"%}
+    </div>
+
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="remap_extra_rule" mtype="input" mtclass="span2" mdclass="span4"%}
+    </div>
+  </div>
+
+  <div class="tab-pane fade" id="referer_{{one_model_data.id}}">
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="referer_enable" mtype="checkbox" mtclass="span2" mdclass="span10" mdattr="onchange='window.block_toggle_show(\"referer_enable\")'" %}
+
+    </div>
+    <div id="block_referer_enable_{{one_model_data.id}}">
+      <div class="row-fluid">
+        {% include temp_widgets with  mname="referer_optional" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+
+      </div>
+      <div class="row-fluid">
+        {% include temp_widgets with  mname="referer_only_allow_whitelist" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+      </div>
+
+      <div class="row-fluid">
+        {% include temp_widgets with  mname="referer_redirect_url" mtype="input" mtclass="span2" mdclass="span4"%}
+      </div>
+      <div class="row-fluid">
+        {% include temp_widgets with  mname="referer_whitelist" mtype="textarea" mtclass="span2" mdclass="span10"%}
+      </div>
+      <div class="row-fluid">
+        {% include temp_widgets with  mname="referer_blacklist" mtype="textarea" mtclass="span2" mdclass="span10"%}
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane fade" id="limit_{{one_model_data.id}}">
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="is_limit" mtype="checkbox" mtclass="span2" mdclass="span10" mdattr="onchange='window.block_toggle_show(\"is_limit\")'" %}
+
+    </div>
+    <div id="block_is_limit_{{one_model_data.id}}">
+      <div class="row-fluid">
+        {% include temp_widgets with  mname="limit_conn" mtype="input" mtclass="span2" mdclass="span4"%}
+
+
+        {% include temp_widgets with  mname="limit_rate" mtype="input" mtclass="span2" mdclass="span4"%}
+
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane fade" id="bigfile_{{one_model_data.id}}">
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="enable_backend_cache" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="enable_proxy_cache" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+    </div>
+    <div class="row-fluid">
+      {% include temp_widgets with  mname="enable_dragging_on_miss" mchoices=enable_dragging_on_missnames mtype="enumerate" mtclass="span2" mdclass="span4"%}
+    </div>
+  </div>
+
+  <!--
+      <div class="tab-pane fade" id="bk_{{one_model_data.id}}">
+        <div class="row-fluid">
+          {% include temp_widgets with  mname="enable_secondary_schedule" mtype="checkbox" mtclass="span2" mdclass="span10"%}
+        </div>
+        <div class="row-fluid">
+          {% include temp_widgets with  mname="secondary_schedule_host" mtype="input" mtclass="span2" mdclass="span5"%}
+          {% include temp_widgets with  mname="secondary_schedule_visit_threshold" mtype="input" mtclass="span2" mdclass="span3"%}
+        </div>
+      </div>
+      -->
+
+  <div class="tab-pane fade" id="dsa_{{one_model_data.id}}">
+    {% include temp_widgets with  mname="cluster" mtype="multiselect" mtclass="span1" mdclass="span5"%}
+  </div>
+
+
+</div>
+
+
+<script type="text/javascript">
+function block_toggle_show(name){
+  if($("#" + name + "_{{one_model_data.id}}").is(":checked")){
+      $("#block_" + name + "_{{one_model_data.id}}").show();
+  }else{
+      $("#block_" + name + "_{{one_model_data.id}}").hide();
+  }
+}
+
+//定义全局函数
+window.block_toggle_show = block_toggle_show;
+//初始化调用
+block_toggle_show("referer_enable");
+block_toggle_show("is_limit");
+block_toggle_show("is_s3");
+block_toggle_show("is_sinaedge_anti_stealing_link");
+</script>
+

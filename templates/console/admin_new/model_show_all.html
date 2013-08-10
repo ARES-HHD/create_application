@@ -1,0 +1,59 @@
+{% extends "console/base/base.html" %}
+
+{% block js %}
+
+<link rel="stylesheet" href="{{ STATIC_URL }}css/admin_new/{{model}}.css" type="text/css" media="print, projection, screen" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/blue/style.css" type="text/css" media="print, projection, screen" />
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/ajaxsbmt.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootbox/bootbox.js"></script>
+
+<style>
+  div#show_checkboxes { display:none;}
+  li#up_show_checkboxes { display:none;}
+</style>
+
+<script type="text/javascript">
+  {% with  "console/"|add:admin_tmpl_path|add:"/model.js" as temp_template %}
+  {% include temp_template %}
+  {% endwith %}
+
+$(document).ready(function(){
+  //$("#down_show_checkboxes").show();
+
+  $(".search_box").submit(function() {
+     $(".search_result").html("<div class='label'> 正在查询... </div>");
+     return true; // return false to cancel form action
+  });
+});
+</script>
+
+{% endblock %}
+
+{% block container %}
+
+<div class="search_box">
+  {% with  "console/"|add:admin_tmpl_path|add:"/model_search_box.html" as temp_template %}
+  {% include temp_template %}
+  {% endwith %}
+</div>
+
+<div class="search_result">
+  {% include tmpl_all_data %}
+</div>
+
+<div class="search_box">
+  {% with  "console/"|add:admin_tmpl_path|add:"/model_page_navi.html" as temp_template %}
+  {% include temp_template %}
+  {% endwith %}
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+{% endblock %}
+
+{% block jie %}
+hello
+{% endblock %}

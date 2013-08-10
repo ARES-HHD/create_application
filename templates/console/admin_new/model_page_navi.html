@@ -1,0 +1,90 @@
+{% load console_tags %}
+
+<div class="row-fluid">
+  <form method="POST" action="/{{group}}/{{model}}/show/" name="form_search_uniq_name" id="form_search_uniq_id"
+        class="navbar-search pull-left span12 form_search">
+        <!-- class="form_search" -->
+    <div class="span6">
+
+      {% if page_choices|length > 1 %}
+      <span class="pagination pagination-small">
+        <ul>
+
+          {% ifequal page_pre "-1" %}
+          {% else %}
+          <li>
+            <a href="#" onclick="$('#form_search_page').val($(this).attr('value'));$('.form_search').submit();"
+               value="{{page_pre}}"> Prev</a>
+          </li>
+          {% endifequal %}
+
+          {% for page in page_choices %}
+          <li {% ifequal page_n page %} class="active" {% endifequal %}>
+            <a href="#" onclick="$('#form_search_page').val($(this).attr('value'));$('.form_search').submit();"
+               value="{{page}}"> {{page|add:1}}</a>
+          </li>
+          {% endfor %}
+
+          {% ifequal page_next "-1" %}
+          {% else %}
+          <li>
+            <a href="#" onclick="$('#form_search_page').val($(this).attr('value'));$('.form_search').submit();"
+               value="{{page_next}}"> Next</a>
+          </li>
+          {% endifequal %}
+        </ul>
+      </span>
+      {% endif %}
+    </div>
+    <div class="span6" title="搜索">
+      <!-- <span class="span1" title="搜索"> -->
+      <select class="span5 search-query" id="search_field"
+              name="search_field">
+        <option {% ifequal search_field "" %} selected="selected" {% endifequal %} value="">
+          ANY
+        </option>
+        {% for sf in search_fields %}
+        <option {% ifequal search_field sf %} selected="selected" {% endifequal %}>
+          {{sf}}
+        </option>
+        {% endfor %}
+      </select>
+
+      <input name="search_text" type="text" class="span6 search-query"
+             onkeypress="{if (event.keyCode==13)$(this).submit();}"
+             value="{{search_text}}">
+      <a href="#" type="submit" class="" onclick="$('.form_search').submit();"><i class="icon-search"></i></a>
+
+    </div>
+
+    <input type="hidden" name="page" value="0" id="form_search_page">
+
+    <div id="show_checkboxes" class="row-fluid">
+      <div class="row-fluid">
+        <a href="#" type="submit"
+           class="btn span10"
+           onclick="$('.form_search').submit();">
+          <i class="icon-ok"> </i> 确定并重新显示
+          </a>
+        <a class="btn span2" href="#"
+           title="注意隐藏后会保留修改"
+           onclick="$('#show_checkboxes').hide();"
+           > <i class="icon-chevron-up"> </i> 隐藏
+        </a>
+
+      </div>
+
+      {% for display, display_width in model_all_list_display %}
+      <label class="checkbox span2" >
+        {% with display_name="list_display_show_items_"|add:display %}
+        <input type="checkbox" id="a"
+               name="{{display_name}}" value="True"
+               {% if list_display_context|getitem:display_name %} checked="checked" {% endif %}>
+        {{model_new_data_for_head|getitem:display|getitem:"verbose_name"|capfirst}}
+        {% endwith %}
+      </label>
+      {% endfor %}
+    </div>
+  </form>
+
+</div>

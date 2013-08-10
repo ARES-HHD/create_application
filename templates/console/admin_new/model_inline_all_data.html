@@ -1,0 +1,85 @@
+{% load console_tags %}
+
+<div id="{{model}}_inline_data_{{uniqid}}">
+
+  <div id="global_alert_slot" class="">
+  </div>
+
+  <form method="POST" class="form-inline"
+        id="model_inline_Form_{{uniqid}}"
+        name="model_inline_Form_{{uniqid}}"
+        action="/{{group}}/{{model_url}}/inline_add_modify_delete/{{uniqid}}/"
+        onsubmit="{% for f in manytomany__fields %}selectAllOptions('{{f}}{{uniqid}}'); {% endfor %} xmlhttpPost('/{{group}}/{{model_url}}/inline_add_modify_delete/{{uniqid}}/', 'model_inline_Form_{{uniqid}}', '{{model}}_inline_data_{{uniqid}}', 'submit_alert_slot{{uniqid}}'); return false;">
+
+    <div>
+      <!-- <div class="span1"> -->
+      <div id="submit_alert_slot{{uniqid}}">
+      </div>
+
+      {% if error_msg %}
+      <div>
+        {% for key, errormsg in error_msg.items %}
+        <div class="alert alert-error"> <strong>{{key}}: </strong> {{errormsg}} </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <table class="table table-bordered table-condensed table-hover">
+      <thead class="well inline" style="word-break:keep-all">
+            {% if not title_is_hide = "hide" %}
+        <tr>
+          {% for display, display_width in model_list_display %}
+          <th style="width: {{display_width}}%; "
+              title="{{model_new_data_for_head|getitem:display|getitem:"verbose_name"|capfirst}}">
+            {% if not title_is_hide = "hide" %}
+            <span class="inline">
+            {{model_new_data_for_head|getitem:display|getitem:"verbose_name"|capfirst}}
+            </span>
+            {% endif %}
+          {% if not forloop.last %}
+          </th>
+          {% endif %}
+
+          {% endfor %}
+
+          <!-- <th style="width:12%;"> -->
+            {% if not title_action_is_hide = "hide" %}
+            <div class="btn-group">
+              <a class="btn btn-mini btn-primary" href="#" title="统一保存{{model}}" type="submit"
+                 onclick="$('#model_inline_Form_{{uniqid}}').submit();"
+                 > <i class="icon-ok icon-white"> </i> 保存
+              </a>
+              <a class="btn btn-mini btn-success" title="添加 {{model}}"
+                 onclick="load_{{model}}_0({{uniqid}})"
+                 ><i class="icon-plus icon-white"> </i> </a>
+
+            </div>
+            {% endif %}
+          </th>
+        </tr>
+            {% endif %}
+      </thead>
+      <tbody style="word-break:break-all">
+        <tr id="{{model}}data_create_{{uniqid}}" style="display: none">
+          {% for display, display_width in model_list_display %}
+          <td style="width: {{display_width}}%; "
+              title="{{model_new_data_for_head|getitem:display|getitem:"verbose_name"|capfirst}}">
+
+          </t>
+          {% endfor %}
+	    </tr>
+
+    {% for one_model_data in model_datas %}
+
+    {% if page_show_edit or one_model_data.admin_new_inline_status = "to-add" or one_model_data.admin_new_inline_status = "to-modify" %}
+        {% include tmpl_edit_show_one %}
+    {% else %}
+        {% include tmpl_show_one %}
+    {% endif %}
+
+    {% endfor %}
+      </tbody>
+    </table>
+  </form>
+</div>

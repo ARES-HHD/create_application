@@ -1,0 +1,9 @@
+{% if user_status %}
+    {% with temp_template="console/"|add:admin_tmpl_path|add:"/edit_templ/"|add:model|add:"_edit_show_one_data_all.html" %}
+        {% include temp_template %}
+    {% endwith %}
+{% else %}
+    {% with temp_template="console/"|add:admin_tmpl_path|add:"/edit_templ/"|add:model|add:"_edit_show_one_data_brief.html" %}
+        {% include temp_template %}
+    {% endwith %}
+{% endif %}

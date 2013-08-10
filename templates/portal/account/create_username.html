@@ -1,0 +1,56 @@
+{% extends "console/base/base.html" %}
+
+{% block title %}
+创建用户
+{% endblock %}
+
+{% block container %}
+{% load url from future %}
+
+<form class="form-horizontal" method="POST" action="" accept-charset="utf-8">
+{% csrf_token %}
+  <fieldset>
+
+    <legend>Add user</legend>
+    {% if error_msg %}
+        {% for key, errormsg in error_msg.items %}
+        <div class="alert alert-error"> <strong>{{key}}: </strong> {{errormsg}} </div>
+        {% endfor %}
+        <hr>
+    {% endif %}
+
+    <div class="control-group">
+      <label class="control-label">Username:</label>
+      <div class="controls">
+        <input class="input-medium" type="text" name="username" value="{{user_name}}">
+        <p class="help-block">请使用邮箱前缀注册，后续我们将发有关信息到这个账号</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Password:</label>
+      <div class="controls">
+        <input class="input-medium" type="password" name="password">
+        <p class="help-block">请输入您的密码</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Password confirmation:</label>
+      <div class="controls">
+        <input class="input-medium" type="password" name="confirm_password">
+        <p class="help-block">Enter the same password as above, for verification.</p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+        <input class="btn btn-primary" type="submit" value="提交">
+        <input class="btn btn-small" type="reset" value="reset">
+    </div>
+
+    <hr>
+
+</fieldset>
+</form>
+
+{% endblock %}

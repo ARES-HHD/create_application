@@ -1,0 +1,10 @@
+
+{% ifequal model "application" %}
+
+<li>
+    <a target="_" href="{% url console_export_app_list %}?search_text={{ search_text }}" >
+        <i class="icon-eye-open"></i>导出App列表 
+    </a>
+</li>
+
+{% endifequal %}

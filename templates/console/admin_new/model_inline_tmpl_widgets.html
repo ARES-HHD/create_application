@@ -1,0 +1,237 @@
+{% load console_tags %}
+
+{% ifequal mtype "div" %}
+<div class="control-group {{mtclass}}" style="text-align:right"
+     >{{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}:</div>
+<div class="control-group {{mdclass}} {{one_model_data|getitem:mname|getitem:'class'}}">
+  <div class="span12" id="{{mname}}_{{one_model_data.id}}"
+       name="{{mname}}">{{one_model_data|getitem:mname|getitem:"value"}}</div>
+  <div class="help-block">
+    {{one_model_data|getitem:mname|getitem:"help_text"|safe|capfirst}}</div>
+</div>
+{% endifequal %}
+
+{% ifequal mtype "pre" %}
+<div class="control-group {{mtclass}}" style="text-align:right">
+  {{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}:
+</div>
+<div class="control-group {{mdclass}} {{one_model_data|getitem:mname|getitem:'class'}}">
+  <pre class="span12" id="{{mname}}_{{one_model_data.id}}"
+       name="{{mname}}">{{one_model_data|getitem:mname|getitem:"value"}}</pre>
+  <div class="help-block">
+    {{one_model_data|getitem:mname|getitem:"help_text"|safe|capfirst}}</div>
+
+</div>
+{% endifequal %}
+
+
+{% ifequal mtype "password" %}
+<div class="control-group {{mtclass}}" style="text-align:right">
+  {{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}:
+</div>
+<div class="control-group {{mdclass}} {{one_model_data|getitem:mname|getitem:'class'}}">
+  <input class="span12" id="{{mname}}_{{one_model_data.id}}" type="password" value="{{one_model_data|getitem:mname|getitem:"value"}}"
+         {{attribute}}
+         name="{{mname}}">
+  <div class="help-block">
+    {{one_model_data|getitem:mname|getitem:"help_text"|safe|capfirst}}</div>
+</div>
+{% endifequal %}
+
+
+{% ifequal mtype "input" %}
+<div class="control-group {{one_model_data|getitem:mname|getitem:'class'}}"
+     title="{{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}">
+  <input class="span12"
+         id="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+         name="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+         type="text" value="{{one_model_data|getitem:mname|getitem:"value"}}"
+         {{attribute}}>
+  <span class="{{one_model_data|getitem:mname|getitem:'class'}}">
+  <strong>
+    {{one_model_data|getitem:mname|getitem:"errormsg"|safe|capfirst}}
+  </strong>
+  </span>
+</div>
+{% endifequal %}
+
+{% ifequal mtype "select" %}
+<div class="control-group {{one_model_data|getitem:mname|getitem:'class'}}"
+     title="{{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}">
+  <select class="span12"
+          id="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+          name="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+          >
+    {% for choice in mchoices %}
+    <option {% ifequal one_model_data|getitem:mname|getitem:"value" choice %} selected="selected" {% endifequal %}>
+      {{choice}}
+    </option>
+    {% endfor %}
+  </select>
+  <strong>
+    {{one_model_data|getitem:mname|getitem:"errormsg"|safe|capfirst}}
+  </strong>
+</div>
+{% endifequal %}
+
+{% ifequal mtype "textarea" %}
+<div class="control-group {{one_model_data|getitem:mname|getitem:'class'}}"
+     title="{{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}">
+
+  <textarea class="span12"
+            id="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+            name="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+            rows="1"
+            >{{one_model_data|getitem:mname|getitem:"value" }}</textarea>
+
+  <strong class="{{one_model_data|getitem:mname|getitem:'class'}}">
+    {{one_model_data|getitem:mname|getitem:"errormsg"|safe|capfirst}}
+  </strong>
+</div>
+{% endifequal %}
+
+{% ifequal mtype "checkbox" %}
+<div class="control-group {{mtclass}}" style="text-align:right"></div>
+<label class="checkbox {{mdclass}}">
+  <input type="checkbox" id="{{mname}}_{{one_model_data.id}}" {{mdattr}}
+         name="{{mname}}" value="True" {% if one_model_data|getitem:mname|getitem:"value" %} checked="checked" {% endif %}
+         >{{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}
+  <div class="help-block">
+    {{one_model_data|getitem:mname|getitem:"help_text"|safe|capfirst}}</div>
+
+</label>
+{% endifequal %}
+
+{% ifequal mtype "enumerate_only_one" %}
+<div class="control-group {{one_model_data|getitem:mname|getitem:'class'}}"
+     title="{{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}">
+  <select class="span12"
+          id="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+          name="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+          >
+    {% for choice, choice_name in mchoices %}{% ifequal one_model_data|getitem:mname|getitem:"value"|tostring choice|tostring %}
+    <option selected="selected"
+            value="{{choice}}">
+      {{choice_name}}
+    </option>
+    {% endifequal %}{% endfor %}
+  </select>
+  <strong class="{{one_model_data|getitem:mname|getitem:'class'}}">
+    {{one_model_data|getitem:mname|getitem:"errormsg"|safe|capfirst}}
+  </strong>
+</div>
+{% endifequal %}
+
+
+{% ifequal mtype "enumerate" %}
+<div class="control-group {{one_model_data|getitem:mname|getitem:'class'}}"
+     title="{{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}">
+  <select class="span12"
+          id="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+          name="{{mname}}_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+          >
+    {% for choice, choice_name in mchoices %}
+    <option {% ifequal one_model_data|getitem:mname|getitem:"value"|tostring choice|tostring %} selected="selected" {% endifequal %}
+            value="{{choice}}">
+      {{choice_name}}
+    </option>
+    {% endfor %}
+  </select>
+  <strong class="{{one_model_data|getitem:mname|getitem:'class'}}">
+    {{one_model_data|getitem:mname|getitem:"errormsg"|safe|capfirst}}
+  </strong>
+</div>
+{% endifequal %}
+
+{% ifequal mtype "revenumerate" %}
+<div class="control-group {{mtclass}}" style="text-align:right">
+  {{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}:
+</div>
+<div class="control-group {{mdclass}} {{one_model_data|getitem:mname|getitem:'class'}}">
+  <select class="span12" id="{{mname}}_{{one_model_data.id}}"
+          name="{{mname}}">
+    {% for choice, choice_name in mchoices %}
+    <option {% ifequal one_model_data|getitem:mname|getitem:"value" choice_name %} selected="selected" {% endifequal %}
+            value="{{choice}}">
+      {{choice_name}}
+    </option>
+    {% endfor %}
+  </select>
+  <div class="help-block">
+    {{one_model_data|getitem:mname|getitem:"help_text"|safe|capfirst}}</div>
+
+</div>
+{% endifequal %}
+
+{% ifequal mtype "multiselect" %}
+    <div class="row-fluid">
+      <div class="control-group {{mtclass}}">
+      </div>
+      <div class="help-block">
+        {{one_model_data|getitem:mname|getitem:"help_text"|safe|capfirst}}</div>
+    </div>
+
+
+    <div class="row-fluid">
+      <div class="control-group {{mtclass}}" style="text-align:right">
+        {{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}:
+      </div>
+
+      <div class="control-group {{mdclass}} {{one_model_data|getitem:mname|getitem:'class'}}">
+        <select class="span12"
+                ondblclick="moveOption('{{mname}}{{one_model_data.id}}', 'manytomany__{{mname}}{{one_model_data.id}}'); "
+                name="{{mname}}"
+                id="{{mname}}{{one_model_data.id}}"
+                title="双击删除"
+                multiple="multiple" size="14">
+          {% for l, name in one_model_data|getitem:mname|getitem:"value" %}
+          <option value="{{l}}">
+            {{name}}
+          </option>
+          {% endfor %}
+	    </select>
+      </div>
+
+      <div class="control-group {{mdclass}}  {{one_model_data|getitem:mname|getitem:'class'}}">
+        <select class="span12"
+                ondblclick="moveOption('manytomany__{{mname}}{{one_model_data.id}}', '{{mname}}{{one_model_data.id}}'); "
+                name="manytomany__{{mname}}"
+                id="manytomany__{{mname}}{{one_model_data.id}}"
+                title="双击选择"
+                multiple="multiple" size="14">
+          {% for l, name in manytomany_keys|getitem:mname %}
+          <option value="{{l}}">
+            {{name}}
+          </option>
+          {% endfor %}
+	    </select>
+      </div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="control-group {{mtclass}}" style="text-align:right">
+        {{one_model_data|getitem:mname|getitem:"verbose_name"|capfirst}}:
+      </div>
+
+      <div class="control-group {{mdclass}}">
+        <input class="span12" id="select_filter_to__{{mname}}_{{one_model_data.id}}" type="text" value=""
+               name="select_filter_to__{{mname}}">
+      </div>
+
+      <div class="control-group {{mdclass}}">
+        <input class="span12" id="select_filter_from__{{mname}}_{{one_model_data.id}}" type="text" value=""
+               name="select_filter_from__{{mname}}">
+      </div>
+      <div class="icon-search"></div>
+    </div>
+<script>
+function keep_manytomany_lists_into_js() {
+    $('#{{mname}}{{one_model_data.id}}').filterByText($('#select_filter_to__{{mname}}_{{one_model_data.id}}'));
+    $('#manytomany__{{mname}}{{one_model_data.id}}').filterByText($('#select_filter_from__{{mname}}_{{one_model_data.id}}'));
+}
+
+//定义全局函数
+window.keep_manytomany_lists_into_js = keep_manytomany_lists_into_js;
+keep_manytomany_lists_into_js();
+</script>
+{% endifequal %}

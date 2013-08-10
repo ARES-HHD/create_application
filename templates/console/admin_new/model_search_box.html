@@ -1,0 +1,6 @@
+<h3>{{model|capfirst}} 管理 <small>: {{total_in_page}}</small> </h3>
+
+{% with  "console/"|add:admin_tmpl_path|add:"/model_page_navi.html" as temp_template %}
+{% include temp_template %}
+{% endwith %}
+

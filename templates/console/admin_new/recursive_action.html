@@ -1,0 +1,46 @@
+<ul class="dropdown-menu sub-menu" style="left:-100%">
+  <!-- start circle -->
+  {% if not action_in_sub %}
+        {% for action, action_name, action_icon in model_actions %}
+        {% ifequal action_name "divider" %}
+        <li class="divider"></li>
+        {% else %}
+        <li><a
+               onclick="load_{{model}}_action('{{action}}', {{one_model_data.id}})"
+               ><i class="icon-{{action_icon}}"></i> {{action_name}}</a></li>
+        {% endifequal %}
+        {% endfor %}
+  {% endif %}
+
+
+
+  {% for sub_menu_url, sub_menu_name, sub_menu_icon, sub_menu_children in menu_children %}
+  <li>
+    <a
+       onclick="load_{{model}}_action('{{sub_menu_url}}', {{one_model_data.id}})">
+      <i class="icon-{{sub_menu_icon}}"></i> {{sub_menu_name}}
+      {% if sub_menu_children|length > 0 %}
+      <span style="text-align:right" > &raquo; </span>
+	  {% endif %}
+    </a>
+    {% if sub_menu_children|length > 0 %}
+
+    {% with filename="console/admin_new/recursive_action.html" action_in_sub="True" %}
+    {% include filename with menu_children=sub_menu_children %}
+    {% endwith %}
+
+	{% endif %}
+  </li>
+  {% endfor %}
+
+
+  {% if not action_in_sub %}
+        <li class="divider"></li>
+        <li><a
+               onclick="load_{{model}}_delete({{one_model_data.id}}, '{{one_model_data.admin_new_fakeid}}')"
+               ><i class="icon-trash"></i> 删除 {{model|capfirst}}</a></li>
+
+  {% endif %}
+
+  <!-- end circle -->
+</ul>

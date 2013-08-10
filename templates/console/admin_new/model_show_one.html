@@ -1,0 +1,63 @@
+{% load console_tags %}
+
+<tr id="{{model}}data_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}">
+  <!-- <td> -->
+  <!--   <input type="checkbox"> -->
+  <!-- </td> -->
+  {% for display, display_width, choices_enum in model_list_display %}
+  <td>
+
+    {% ifequal one_model_data|getitem:display|getitem:"show_type" "show_bool" %}
+    {% if one_model_data|getitem:display|getitem:"value" %}
+    <span class="badge badge-success"> &radic;&nbsp; </span>
+    {% else %}
+    <span class="badge badge-dangrous"> &times; </span>
+    {% endif %}
+    {% endifequal%}
+
+
+    {% ifequal one_model_data|getitem:display|getitem:"show_type" "show_url" %}
+    {% ifequal one_model_data|getitem:display|getitem:"url" "" %}
+    {{one_model_data|getitem:display|getitem:"value"}}
+    {% else %}
+    <a href="{{one_model_data|getitem:display|getitem:'url'}}"
+       title="{{one_model_data|getitem:display|getitem:'title'}}">
+      {{one_model_data|getitem:display|getitem:"value"}}
+    </a>
+    {% endifequal %}
+    {% endifequal%}
+
+
+    {% ifequal one_model_data|getitem:display|getitem:"show_type" "show_str" %}
+     {% ifequal one_model_data|getitem:display|getitem:"alias" "" %}
+     {{one_model_data|getitem:display|getitem:"value"}}
+     {% else %}
+     {{one_model_data|getitem:display|getitem:"alias"|cut:".nb.sinaedge.com"}}
+     {% endifequal %}
+    {% endifequal%}
+
+
+    {% ifequal one_model_data|getitem:display|getitem:"show_type" "show_enum" %}
+    {% with  one_model_data|getitem:display|getitem:"value" as temp_index %}
+    {{choices_enum|getitem:temp_index}}
+    {% endwith %}
+    {% endifequal%}
+
+    {% endfor %}
+  </td>
+
+  <td class="">
+    <div class="btn-group">
+      <a class="btn btn-mini" title="编辑"
+         onclick="load_{{model}}({{one_model_data.id}}, '{{one_model_data.admin_new_fakeid}}')"
+         ><i class="icon-pencil"></i> 编辑
+      </a>
+
+      <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+
+      {% with "console/admin_new/recursive_action.html" as filename %}
+      {% include filename with menu_children=sub_action_children %}
+      {% endwith %}
+    </div>
+  </td>
+</tr>

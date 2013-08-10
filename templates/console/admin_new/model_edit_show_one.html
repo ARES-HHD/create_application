@@ -1,0 +1,65 @@
+<tr id="{{model}}data_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+    class="well">
+  <td colspan="100%">
+    <!--
+  {% with model_list_display|length|add:-4 as prelen%}
+  {% if prelen > 0 %}
+  <td colspan="{{prelen}}"></td>
+  {% endif %}
+  {% endwith %}
+  <td colspan="6">
+ -->
+    <div class="span10">
+    {% ifequal submit_type_button "create" %}
+    <h3>添加 {{model|capfirst}}:</h3>
+    {% else %}
+    <h3>编辑 {{model|capfirst}}:</h3>
+    {% endifequal %}
+    </div>
+
+    <div class="span2">
+        <a class="span12 btn btn-mini" onclick="load_{{model}}_show({{one_model_data.id}}, '{{one_model_data.admin_new_fakeid}}')">
+          <i class="icon-share-alt"></i> 取消</a>
+    </div>
+    <form method="POST"
+          name="model_Form_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}"
+          action="/{{group}}/{{model_url}}/add_modify/{{one_model_data.id}}/"
+          onsubmit="{% for f in manytomany__fields %}selectAllOptions('{{f}}{{one_model_data.id}}'); {% endfor %} xmlhttpPost('/{{group}}/{{model_url}}/add_modify/{{one_model_data.id}}/', 'model_Form_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}', '{{model}}data_{{one_model_data.id}}_{{one_model_data.admin_new_fakeid}}', 'submit_alert_slot{{one_model_data.id}}'); return false;">
+
+      <div class="row-fluid">
+        <!-- <div class="span1"> -->
+        <div id="submit_alert_slot{{one_model_data.id}}" class="span2">
+        </div>
+
+        {% if error_msg %}
+        <div class="span7">
+          {% for key, errormsg in error_msg.items %}
+          <div class="alert alert-error"> <strong>{{key}}: </strong> {{errormsg}} </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- 显示编辑Form -->
+      {% with temp_template="console/"|add:admin_tmpl_path|add:"/edit_templ/"|add:model|add:"_edit_show_one_data.html" %}
+      {% with temp_widgets="console/"|add:admin_tmpl_path|add:"/model_tmpl_widgets.html" %}
+        {% include temp_template %}
+      {% endwith %}
+      {% endwith %}
+
+      <div class="form-actions">
+        <div class="span3">
+        </div>
+        {% ifequal submit_type_button "create" %}
+        <button class="span2 btn btn-primary" type="submit"><i class="icon-plus icon-white"></i> 确定</button>
+        {% else %}
+        <button class="span2 btn btn-primary" type="submit"><i class="icon-ok icon-white"></i> 保存</button>
+        {% endifequal %}
+        <div class="span1">
+        </div>
+        <a class="btn" onclick="load_{{model}}_show({{one_model_data.id}}, '{{one_model_data.admin_new_fakeid}}')">
+          <i class="icon-share-alt"></i> 取消</a>
+      </div>
+    </form>
+  </td>
+</tr>

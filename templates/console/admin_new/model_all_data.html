@@ -1,0 +1,60 @@
+{% load console_tags %}
+<div id="global_alert_slot" class="">
+</div>
+
+<table class="table table-bordered table-condensed table-hover">
+  <thead class="well" style="word-break:keep-all">
+  <tr>
+      {% for display, display_width in model_list_display %}
+      <th style="width: {{display_width}}%; ">
+        {{model_new_data_for_head|getitem:display|getitem:"verbose_name"|capfirst}}
+      </th>
+      {% endfor %}
+
+      <th style="width:1{{title_action_width}}%;">
+        {% if not title_action_is_hide = "hide" %}
+        <div class="btn-group">
+          <a class="btn btn-mini" title="添加"
+             onclick="load_{{model}}_0({{uniqid}})"
+             ><i class="icon-plus"> </i> 添加 </a>
+
+          <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+
+          <ul class="dropdown-menu" style="left:-100%">
+
+            <li id="down_show_checkboxes">
+              <a class="" href="#"
+                 title="调整显示列数"
+                 onclick="$('#show_checkboxes').show();"
+                 > <i class="icon-list"> </i> 调整显示列数
+              </a>
+            </li>
+
+            {% for action, action_name, action_icon in model_title_actions %}
+            <li><a
+                   onclick="load_{{model}}_action('{{action}}', {{uniqid}})"
+                   ><i class="icon-{{action_icon}}"></i> {{action_name}}</a></li>
+            {% endfor %}
+
+            {% with  "console/"|add:admin_tmpl_path|add:"/model_extend_actions.html" as temp_template %}
+            {% include temp_template %}
+            {% endwith %}
+
+          </ul>
+        </div>
+        {% endif %}
+      </th>
+  </tr>
+  </thead>
+  <tbody style="word-break:break-all">
+    <tr id="{{model}}data_create_{{uniqid}}">
+	</tr>
+    {% for one_model_data in model_datas %}
+    {% if page_show_edit %}
+        {% include tmpl_edit_show_one %}
+    {% else %}
+        {% include tmpl_show_one %}
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
