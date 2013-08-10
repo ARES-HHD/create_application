@@ -13,6 +13,7 @@ from echelon.middleware import EchelonMiddleware
 
 import socket
 
+
 class Username_CheckForm(CheckForm):
     def __init__(self, id, data):
         CheckForm.__init__(self, id, data)

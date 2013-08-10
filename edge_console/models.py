@@ -6,6 +6,7 @@ from account.models import UserProfile
 from portal_console.dip.local_fetcher import LocalFetcher
 from portal_console.dip.utils import minf_traffic_to_bps
 
+
 class App(models.Model):
     name = models.CharField('名称', max_length=128, unique=True,
         help_text="域名的前一个或两个字段，例如down.apps.sina.cn，名称是downapps，确保名称唯一性即可")

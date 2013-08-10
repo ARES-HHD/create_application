@@ -6,8 +6,6 @@
 #
 """ module summary comment here """
 
-
-
 from admin_base import AdminNew
 from commons import *
 from django.db import transaction
@@ -20,7 +18,6 @@ from edge_console.forms_model import *
 from edge_console.models import *
 
 from math import ceil
-
 
 logger = getLogger('except')
 
@@ -567,5 +564,3 @@ class App_AdminNew(AdminNew):
                                      Grid.objects.filter(id__in=last_post.getlist(fake_key))]
                 else:
                     data['value'] = last_post[fake_key]
-
-
