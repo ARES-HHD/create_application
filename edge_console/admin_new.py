@@ -7,6 +7,7 @@
 """ module summary comment here """
 
 from admin_base import AdminNew
+from account.models import UserProfile
 from commons import *
 from django.db import transaction
 from django.db.models import Q, Count, NOT_PROVIDED
@@ -14,8 +15,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.log import getLogger
+from django.core.mail import send_mass_mail, EmailMessage
 from edge_console.forms_model import *
 from edge_console.models import *
+import preference
 
 from math import ceil
 
@@ -48,6 +51,8 @@ class App_AdminNew(AdminNew):
                              )
         self.actions = (
                         ('application_save', 'synchronous', 'eye-open'),
+                        ('email_app_user', 'email_user', 'eye-open'),
+                        ('email_app_wangsu', 'email_wangsu', 'eye-open'),
                         )
 
     def show_all(self, request):
@@ -288,7 +293,6 @@ class App_AdminNew(AdminNew):
             submit_type = 'edit_show'
             cdata = self.get_data_from_obj(model_obj)
             cdata['admin_new_inline_status'] = 'to-modify'
-            print cdata['user']['value']
             current_user = cdata['user']['value'] 
 
         if error_msg:
@@ -415,6 +419,107 @@ class App_AdminNew(AdminNew):
         queryset = self.model.objects.filter(id=id)
         model_obj = queryset[0]
         return_message = self.get_value_from_obj(model_obj)
+        return '<br>'.join(return_message), ""
+
+    def alarm_message_sendmail(self, data):
+        """  发送邮件
+        Args:
+            data: 邮件信息
+        """
+
+        value_dict = {}
+        key = data['select_template']
+        value = preference.get_string_value(key)
+        value_list = re.split(r'[\n:]',value,8)
+        for i in range(0, 7, 2): # 偶数为key, 奇数为value
+            value_dict[value_list[i].title()] = value_list[i+1]
+
+        alarm_message_from_email = value_dict["From"].strip()
+        alarm_message_sub_admin_email = value_dict["Cc"].strip().split(',')
+        mail_subject = value_dict["Subject"].strip()
+        mail_message = data['mail_message']
+        alarm_message_admin_email = data['To']
+        try: 
+            msg = EmailMessage(mail_subject, mail_message,
+                           alarm_message_from_email,
+                           alarm_message_admin_email,
+                           cc=alarm_message_sub_admin_email
+                           )
+
+            msg.send()
+            return_message = ['Success!']
+            return return_message
+        except Exception, e: 
+            raise Exception("Failed to send message!")
+
+
+    def email_app_user(self, id):
+        """  发送邮件给用户
+        Args:
+            id: 数据库中记录的id
+        """
+        
+        data = {}
+        to_user = [u"%s@xxx.xxx.com.cn" % app_user]       
+
+        models = self.model.objects.filter(id=id)
+        model_obj = models[0]
+        cdata = self.get_data_from_obj(model_obj)
+        app_user = cdata['user']['value']
+        wideip = "%s.gslb.xxxx.com" % cdata['name']['value']
+
+        key = 'EMAIL_APP_USER'
+        value = preference.get_string_value(key)
+        value_list = re.split(r'[\n:]',value,8)
+        mail_message = value_list[8].strip()
+
+        u = User.objects.filter(username=app_user)[0]
+        userprofile = UserProfile.objects.filter(user=u)[0]
+        user_kid = userprofile.kid
+        user_key = userprofile.key
+        mail_message = mail_message % (wideip, user_kid, user_key) 
+        data = {
+            'select_template': key,
+            'To': to_user,
+            'mail_message': mail_message
+        }
+        return_message = self.alarm_message_sendmail(data)
+        return '<br>'.join(return_message), ""
+
+    def email_app_wangsu(self, id):
+        """  发送邮件给第三方
+        Args:
+            id: 数据库中记录的id
+        """
+
+        to_user = [u"xxx@xxx.com"]
+        models = self.model.objects.filter(id=id)
+        model_obj = models[0]
+        cdata = self.get_data_from_obj(model_obj)
+        app_channel = cdata['channels']['value']
+        app_origin = cdata['origins']['value']
+        app_check_url = cdata['check_url']['value']
+        app_header = cdata['header_to_add']['value']
+        if cdata['header_to_add']['value']:
+            policy = u"回源要指定host头 %s" % cdata['header_to_add']['value']
+        elif cdata['s3_kid']['value']:
+            policy = u"启用防盗链 kid：%s passwd：%s" % (cdata['s3_kid']['value'], cdata['s3_passwd']['value'])
+        elif cdata['sinaedge_kid']['value']:
+            policy = u"启用防盗链 kid：%s passwd：%s" % (cdata['sinaedge_kid']['value'], cdata['sinaedge_key']['value'])
+        else:
+            policy = u"默认"
+
+        key = 'EMAIL_APP_WANGSU'
+        value = preference.get_string_value(key)
+        value_list = re.split(r'[\n:]',value,8)
+        mail_message = value_list[8].strip()
+        mail_message = mail_message % (app_channel, app_origin, policy, app_check_url) 
+        data = {
+            'select_template': key,
+            'To': to_user,
+            'mail_message': mail_message
+        }
+        return_message = self.alarm_message_sendmail(data)
         return '<br>'.join(return_message), ""
 
 
